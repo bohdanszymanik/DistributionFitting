@@ -62,7 +62,7 @@ p.Fit(cnts)
 let da = new Analysis.DistributionAnalysis(cnts)
 da.Compute()
 da.GoodnessOfFit.[0]
-// .Distribution to get mode details on a fitted distribution
+// .Distribution to get more details on a fitted distribution
 da.GoodnessOfFit.[1]
 da.GoodnessOfFit.[2]
 da.GoodnessOfFit.[3]
