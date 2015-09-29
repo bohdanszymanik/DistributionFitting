@@ -29,8 +29,24 @@ File.WriteAllLines(@"c:\temp\out.txt", cnts |> Array.map (fun c -> (string)c))
 
 open Accord.Statistics
 let h = Visualizations.Histogram(cnts)
+// that's using the default constructor but you can adjust bin count etc by using 
+// let h = Visualizations.Histogram()
+// h.Compute(cnts, 30) for example
 h.Bins |> Seq.map(fun b -> b.Value)
 |> List.ofSeq
+
+// plotting the histogram with fslab google chart works nicely too
+#load "packages/FsLab/FsLab.fsx"
+
+open Deedle
+open FSharp.Data
+open XPlot.GoogleCharts
+open XPlot.GoogleCharts.Deedle
+let histUpperEdges = h.Edges.[1..]
+let histCnts = h.Values
+
+let hists = Array.zip histUpperEdges histCnts
+hists |> Chart.Column
 
 // this is cool - but need to execute next two rows together to get fsi to print summary nicely
 let n = new Distributions.Univariate.NormalDistribution()
@@ -46,6 +62,7 @@ p.Fit(cnts)
 let da = new Analysis.DistributionAnalysis(cnts)
 da.Compute()
 da.GoodnessOfFit.[0]
+// .Distribution to get mode details on a fitted distribution
 da.GoodnessOfFit.[1]
 da.GoodnessOfFit.[2]
 da.GoodnessOfFit.[3]
